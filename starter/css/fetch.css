@@ -37,3 +37,6 @@
   }
   .vendor-card .rating { grid-area: rating; margin: 0.4rem 0 1rem; }
 }
+
+.load-error .retry { border: 0; font: inherit; font-weight: 800; padding: 0.6rem 1.2rem; cursor: pointer; box-shadow: none; }
+.load-error .retry:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
