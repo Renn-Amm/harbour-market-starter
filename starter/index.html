@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="css/data.css">
   <!-- Lecture 8: styles for loading, errors and ratings are ready; the markup and the JavaScript are yours -->
   <link rel="stylesheet" href="css/fetch.css">
+  <link rel="stylesheet" href="css/reviews.css">
   <!-- A module: deferred automatically, its own scope, imports the rest -->
   <script type="module" src="js/main.js"></script>
 </head>
@@ -70,12 +71,54 @@
             <strong class="badge" hidden>Sold out</strong>
             <div class="card-actions">
               <a class="card-link" href="#map">Find the stall →</a>
+              <button class="reviews-button" type="button">Reviews</button>
               <button class="save" type="button" aria-pressed="false">♡</button>
             </div>
           </article>
         </li>
       </template>
       <noscript><p>The vendor list needs JavaScript. The map below shows where every stall is.</p></noscript>
+
+      <dialog class="reviews-dialog" aria-labelledby="reviews-title">
+        <div class="reviews-head">
+          <h2 id="reviews-title">Reviews</h2>
+          <button class="reviews-close" type="button" aria-label="Close reviews">✕</button>
+        </div>
+        <p class="reviews-summary"></p>
+
+        <p class="reviews-status" role="status" aria-live="polite" tabindex="-1"></p>
+        <div class="reviews-error" role="alert">
+          <p class="reviews-error-message"></p>
+          <button class="reviews-retry" type="button" hidden>Try again</button>
+        </div>
+        <ol class="reviews-list" aria-labelledby="reviews-title"></ol>
+
+        <form class="review-form" novalidate>
+          <h3>Write a review</h3>
+
+          <label for="review-author">Your name</label>
+          <input id="review-author" name="author" autocomplete="nickname" maxlength="40" required aria-describedby="review-author-error">
+          <p class="field-error" id="review-author-error"></p>
+
+          <fieldset class="review-stars" aria-describedby="review-rating-error">
+            <legend>Rating</legend>
+            <input type="radio" id="review-rating-1" name="rating" value="1"><label for="review-rating-1" aria-label="1 star">★</label>
+            <input type="radio" id="review-rating-2" name="rating" value="2"><label for="review-rating-2" aria-label="2 stars">★</label>
+            <input type="radio" id="review-rating-3" name="rating" value="3"><label for="review-rating-3" aria-label="3 stars">★</label>
+            <input type="radio" id="review-rating-4" name="rating" value="4"><label for="review-rating-4" aria-label="4 stars">★</label>
+            <input type="radio" id="review-rating-5" name="rating" value="5" checked><label for="review-rating-5" aria-label="5 stars">★</label>
+          </fieldset>
+          <p class="field-error" id="review-rating-error"></p>
+
+          <label for="review-text">Your review</label>
+          <textarea id="review-text" name="text" rows="3" minlength="10" maxlength="280" required aria-describedby="review-text-hint review-text-error"></textarea>
+          <p class="hint" id="review-text-hint">10 to 280 characters.</p>
+          <p class="field-error" id="review-text-error"></p>
+
+          <p class="review-form-error" role="alert"></p>
+          <button class="review-submit" type="submit">Post review</button>
+        </form>
+      </dialog>
     </section>
 
     <section id="map">

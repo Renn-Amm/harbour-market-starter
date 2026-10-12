@@ -37,6 +37,8 @@ function card(stall) {
   save.setAttribute("aria-pressed", String(isSaved));
   save.setAttribute("aria-label", `Save ${stall.name}`);
   save.textContent = isSaved ? "♥" : "♡";
+
+  li.querySelector(".reviews-button").setAttribute("aria-label", `Reviews for ${stall.name}`);
   return li;
 }
 
