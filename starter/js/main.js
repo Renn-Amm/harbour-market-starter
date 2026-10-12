@@ -5,6 +5,7 @@ import { render } from "./render.js";
 import { getJSON } from "./api.js";
 import { setupMenu } from "./menu.js";
 import { setupTickets } from "./tickets.js";
+import { setupReviews } from "./reviews.js";
 
 const filters = document.querySelector(".filters");
 const list = document.querySelector(".vendor-list");
@@ -65,5 +66,6 @@ retry.addEventListener("click", () => {
 
 setupMenu();
 setupTickets();
+setupReviews();
 load();
 await loadStalls();
