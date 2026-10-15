@@ -124,6 +124,7 @@ function draw() {
     errorMessage.textContent = view.notice;
   }
   retry.hidden = view.status !== "error";
+  retry.disabled = view.posting;
 
   submit.disabled = view.posting;
   submit.textContent = view.posting ? "Posting…" : "Post review";
@@ -211,18 +212,26 @@ async function postReview() {
   };
 
   clearFieldErrors();
+  const interrupted = loading !== null;
+  loading?.abort();
   view.posting = true;
   draw();
   try {
     const created = await postJSON(`/stalls/${encodeURIComponent(stallId)}/reviews`, review);
     remember(created.id, true);
-    if (view.stallId === stallId) {
-      view.reviews = [created, ...view.reviews.filter((r) => r.id !== created.id)];
-      if (view.status !== "ready") view.status = "ready";
-      form.reset();
-    }
     view.posting = false;
-    draw();
+    if (view.stallId === stallId) {
+      form.reset();
+      if (interrupted) {
+        loadReviews();
+      } else {
+        view.reviews = [created, ...view.reviews.filter((r) => r.id !== created.id)];
+        if (view.status !== "ready") view.status = "ready";
+        draw();
+      }
+    } else {
+      draw();
+    }
     await refreshStall(stallId);
   } catch (error) {
     view.posting = false;
@@ -233,6 +242,7 @@ async function postReview() {
     } else {
       formError.textContent = `Couldn't post your review: ${describe(error)}. Your text is still here: try again.`;
     }
+    if (interrupted && view.stallId === stallId) loadReviews();
   }
 }
 
